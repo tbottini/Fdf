@@ -1,0 +1,72 @@
+O = valeur de l'angle entre a et b
+
+/// si on fait une rotation sur z nouvelle position :
+Xb = Xa * cos(O) - ya * sin(O)
+Yb = xa * sin(O) + ya * cos(O)
+Zb = Za
+
+/// rot / y
+Xb = xa * cos(O) + za * sin(O)
+Yb = Yb
+Zb = xa * -sin(O) + za * cos(O)
+
+/// rot / x
+Xb = xa
+Yb = ya * cos(O) - za * sin(O)
+Zb = ya * sin(O) + za * cos(O)
+
+/// Tx translation
+Xb = xa + Tx
+Yb = yb + Ty
+Zb = zb + Tz
+
+/// scale modification
+Xb = xa.Sx
+Yb = yb.Sy
+Zb = zb.Sz
+
+[W] = [T].[Rx].[Ry].[Rz].[S]
+
+W2V
+
+passe du model a l ecran
+pour la simplicite hauteur de ecran 2 pos haut 1
+largeur ar = l / h pour que le ratio soit a un
+perspective selon l angle de vue fov ( = 'O' )
+distance cam ecran : d 
+d = 1 / tan(O / 2)
+
+sinon la distance ecran d (si hauteur = hauteur / 2 et non 1)
+d = 0.5h / tan (O / 2)
+ou
+d = h / 2tan(O/2)
+
+//si la cam ne tourne pas
+sy = ((py - cy) * (screen))/(pz - cz * 2tan O)
+sx = ((px - cx) * (screenx)/(pz - cz * 2tan O))
+!!!convertion angle radian
+//si la cam est tournee
+on fait une rotation des position pour
+sy un rotation selon x
+sx un rotation selon y
+la rotation selon y ne modifie pas la position sur l ecran de y
+on recupere la nouvelle position puis on calcule
+
+
+http://www.codinglabs.net/article_world_view_projection_matrix.aspx
+https://jeux.developpez.com/tutoriels/OpenGL-ogldev/tutoriel-12-projection-perspective/
+
+--- Multiplication Matricielle ---
+
+|a b| x |e f|
+|c d|   |g h|
+
+a = a x e + b x g
+b = a x f + b x h
+c = c x e + d x g
+d = c x f + d x h
+
+une matrice (2, 4) x (4, 2) donne une matrice (4, 4)
+addition clasique multiplication par nombre classique aussi
+
+// un objet doit il toujours avoir un transform ou juste un vector position ?

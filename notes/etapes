@@ -1,0 +1,24 @@
+----etapes----
+
+///parseur
+-calculer taille fen pour taille maillage
+///recuperer la fenetre
+/-model to view
+	-verifier que le point n est pas place en dehors de l ecran
+	-avoir plusieur perspective (orthograpique ? cavaliere?)
+///trait
+-relier le model rectangulaire
+-input bouger
+
+//
+on place tous les point dans le monde
+
+comment relier le point 1 1 et 1 2
+rmesh->point to world
+worldpoint->pointscreen
+pointscreen * 2 = trait
+
+la position des point dans le fdf seront toujours identique
+-> utilisation de double tableau
+
+stocker les point du tableau ?

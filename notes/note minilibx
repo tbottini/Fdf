@@ -1,0 +1,45 @@
+----note minilibx----
+
+les image de la minilibx ?
+
+les fonctions de la minilibx ?
+mlx_pixel_put (*mlx, *win, x, y, int color)
+mlx_string_put(mlx, win, x, y, color, string)
+mlx_clear_windows, destroy;
+mlx new image
+mlx loop
+mlx_mouse_hook (int button, int x, int y, void *param)
+mlx_expose_hook (void *param)
+mlx_loop_hook ()
+mlx key hook (win, int (*fct)(), void *param)
+
+keyhook recupere le fait qu'un touche est presse
+param windows fonction et param
+int key le numero de la touche
+
+int key est le numero de la touche
+
+image suite de char, img 800 * 600 = 480000char
+l'image c'est une variable de tout l'ecran de la fenetre
+modifier cette variable et la laisser etre gerer par la carte
+graphique c'est plus rapide que de demander a la mlx de faire
+des appel de X pour modifier pixel par pixel
+
+autant modifier toute la variable et apres l afficher
+
+creer une image
+img = mlx_new_image(pointeur_mlx, largeur, hauteur);
+obtenir le contenue
+my_image_string = mlx_get_data_addr(img, &_bite_par_pixel, &size_line, &endian)
+//les 3 derniere variable seront initialise par la fonction
+
+afficher
+mlx_put_image_to_window(data, win, img, 0, 0)
+
+data ? pointeur mlx?
+
+get_color_value ?
+xpm_to_image ?
+mlx_xpm_file_to_image
+
+
