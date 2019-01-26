@@ -11,27 +11,27 @@ int				input_fdf(int key, t_mlx_data *fdf)
 	if (key == KEY_W)
 	{
 		fdf->cam->position->z += z_dir;
-		fdf->cam->position->x += x_dir;
+		fdf->cam->position->x -= x_dir;
 	}
 	else if (key == KEY_A)
 	{
-		fdf->cam->position->z += x_dir;
+		fdf->cam->position->z -= x_dir;
 		fdf->cam->position->x -= z_dir;
 	}
 	else if (key == KEY_S)
 	{
 		fdf->cam->position->z -= z_dir;
-		fdf->cam->position->x -= x_dir;
+		fdf->cam->position->x += x_dir;
 	}
 	else if (key == KEY_D)
 	{
-		fdf->cam->position->z -= x_dir;
+		fdf->cam->position->z += x_dir;
 		fdf->cam->position->x += z_dir;
 	}
 	else if (key == KEY_Q)
-		fdf->cam->rotation->y += 15;
+		fdf->cam->rotation->y += 45;
 	else if (key == KEY_E)
-		fdf->cam->rotation->y -= 15;
+		fdf->cam->rotation->y -= 45;
 	//altitude
 	else if (key == KEY_R)
 		fdf->cam->position->y++;
@@ -40,7 +40,7 @@ int				input_fdf(int key, t_mlx_data *fdf)
 
 	ft_bzero(fdf->screen, SCREEN_X * SCREEN_Y * 4);
 	start_point(fdf->wires, fdf->cam, fdf->screen, 45);
-
+	vct3_print(*fdf->cam->position);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 	//start_point(wires, camera, fdf->screen, 45);
 	return (1);
