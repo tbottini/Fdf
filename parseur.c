@@ -1,5 +1,7 @@
 #include "fdf.h"
 
+//le retour d'erreur peut etre une coordonne negative
+
 int		ft_atoc(const char *str, int *i)
 {
 	int sign;
@@ -52,6 +54,7 @@ int			fdf_check(t_rmesh *wires, char *str)
 	wires->size_x = wires->size_x;
 	if (!(wires->wires = ft_new_cdt(wires->size_x, wires->size_y)))
 	{
+		printf("PROBLM MALLOC\n");
 		free(wires);
 		return (0);
 	}
@@ -77,12 +80,6 @@ t_rmesh		*set_rmesh(t_rmesh *wires, char *str)
 	return (wires);
 }
 
-void *ft_error_void(char *msg)
-{
-	ft_putendl(msg);
-	return (NULL);
-}
-
 t_rmesh			*fdf_parseur(int ac, char **av)
 {
 	char 		*file;
@@ -91,12 +88,12 @@ t_rmesh			*fdf_parseur(int ac, char **av)
 	int			ret;
 
 	if (ac != 2)
-		return (ft_error_void("usage: fdf source_file"));
+		return (ft_error_null("usage: fdf source_file"));
 	if ((fd = open(av[1], O_RDONLY)) == -1)
 	{
 		ft_putstr("fdf: ");
 		ft_putstr(av[1]);\
-		return (ft_error_void(": No such file or directory"));
+		return (ft_error_null(": No such file or directory"));
 	}
 	if ((file = ft_get_file(fd)) == NULL
 		|| !(wires = (t_rmesh *)malloc(sizeof(t_rmesh))))
@@ -104,7 +101,7 @@ t_rmesh			*fdf_parseur(int ac, char **av)
 	if ((ret = fdf_check(wires, file)) == -1)
 	{
 		free(file);
-		return (ft_error_void("Invalid file"));
+		return (ft_error_null("Invalid file"));
 	}
 	free(file);
 	if (ret == 0 || set_rmesh(wires, file) == NULL)

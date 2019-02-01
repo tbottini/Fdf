@@ -6,12 +6,14 @@ unsigned int 	color(unsigned char r, unsigned char g, unsigned char b)
     return (r * 256*256) + (g * 256) + b;
 }
 
-void			pixel_img(unsigned int *screen, t_vector2 vct, unsigned int color)
+void			pixel_img(t_mlx_data *fdf, t_vector2 vct, unsigned int color)
 {
-	screen[vct.x + vct.y * SCREEN_X] = color;
+	if (vct.x < fdf->cam->size_x && vct.y < fdf->cam->size_y && vct.y > 0
+		&& vct.x > 0)
+		fdf->screen[vct.x + vct.y * fdf->cam->size_x] = color;
 }
 
-static void			trait_img(unsigned int *screen, t_vector2 vct1, t_vector2 vct2, unsigned int col)
+static void			trait_img(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigned int col)
 {
 	int dx;
 	int dy;
@@ -30,7 +32,7 @@ static void			trait_img(unsigned int *screen, t_vector2 vct1, t_vector2 vct2, un
 	while (vct1.x != vct2.x)
 	{
 		vct1.x++;
-		pixel_img(screen, vct1, col);
+		pixel_img(fdf, vct1, col);
 		if (D > 0)
 		{
 			vct1.y += yi;
@@ -40,7 +42,7 @@ static void			trait_img(unsigned int *screen, t_vector2 vct1, t_vector2 vct2, un
 	}
 }
 
-static void			trait_img_up(unsigned int *screen, t_vector2 vct1, t_vector2 vct2, unsigned int col)
+static void			trait_img_up(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigned int col)
 {
 	int dx;
 	int dy;
@@ -59,7 +61,7 @@ static void			trait_img_up(unsigned int *screen, t_vector2 vct1, t_vector2 vct2,
 	while (vct1.y != vct2.y)
 	{
 		vct1.y++;
-		pixel_img(screen, vct1, col);
+		pixel_img(fdf, vct1, col);
 		if (D > 0)
 		{
 			vct1.x += xi;
@@ -69,21 +71,21 @@ static void			trait_img_up(unsigned int *screen, t_vector2 vct1, t_vector2 vct2,
 	}
 }
 
-void		trait(unsigned int *screen, t_vector2 vct1, t_vector2 vct2, unsigned int col)
+void		trait(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigned int col)
 {
 	if (abs(vct2.y - vct1.y) < abs(vct2.x - vct1.x))
 	{
 		if (vct1.x > vct2.x)
-			trait_img(screen, vct2, vct1, col);
+			trait_img(fdf, vct2, vct1, col);
 		else
-			trait_img(screen, vct1, vct2, col);
+			trait_img(fdf, vct1, vct2, col);
 	}
 	else
 	{
 		if (vct1.y > vct2.y)
-			trait_img_up(screen, vct2, vct1, col);
+			trait_img_up(fdf, vct2, vct1, col);
 		else
-			trait_img_up(screen, vct1, vct2, col);
+			trait_img_up(fdf, vct1, vct2, col);
 	}
 
 }

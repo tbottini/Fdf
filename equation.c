@@ -18,14 +18,35 @@ t_vector3			*model_to_world(t_vector3 local_pos, t_vector3 trans, t_vector3 rot,
 	return (w_pos);
 }
 
-t_vector2		*world_to_view(t_vector2 *cursor, t_vector3 rot_cam, t_vector3 pos_cam, t_vector3 w_pos, float fov)
+t_vector2		*world_to_view(t_vector2 *cursor, t_camera cam, t_vector3 w_pos, float scale)
 {
 	t_vector3 delta;
 
-	delta = *vct3_calc(&w_pos, &pos_cam, &sub);
-	vct3_rotation(&delta, rot_cam);
-	cursor->x =	(delta.x * (SCREEN_X/2) / delta.z * tan(fov / 2 * PI / 180)) + SCREEN_X/2;
-	cursor->y = (delta.y * (SCREEN_Y/2)/ delta.z * tan(fov / 2 * PI / 180)) + SCREEN_Y/2;
+	delta = *vct3_calc(&w_pos, cam.position, &sub);
+	vct3_rotation(&delta, *cam.rotation);
+	if (cam.proj == 1)
+	{
+		if (delta.z > 0)
+		{
+			cursor->x =	(delta.x * 1000 * scale / delta.z * tan(cam.fov / 2 * PI / 180));
+			cursor->x += cam.size_x / 2;
+			cursor->y = (delta.y * 1000 * scale / delta.z * tan(cam.fov / 2 * PI / 180));
+			cursor->y += cam.size_y / 2;
+		}
+		else
+			vct2_value(cursor, -1, -1);
+
+	}
+	else if (cam.proj == 2)
+	{
+		if (delta.z < 0)
+			vct2_value(cursor, -1, -1);
+		else
+		{
+			cursor->x =	delta.x * 50 / scale + cam.size_x / 2;
+			cursor->y = delta.y * 50 / scale + cam.size_y / 2;
+		}
+	}
 	return (cursor);
 }
 

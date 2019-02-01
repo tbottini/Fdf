@@ -20,9 +20,10 @@ t_vector3		*vct3_value(t_vector3 *vct, int x, int y, int z)
 	return (vct);
 }
 
-void			vct3_print(t_vector3 vct)
+void			vct3_print(char *info, t_vector3 vct)
 {
-	ft_putstr("vector x : ");
+	ft_putstr(info);
+	ft_putstr(" x : ");
 	ft_putnbr(vct.x);
 	ft_putstr(" y : ");
 	ft_putnbr(vct.y);
