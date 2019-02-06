@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by yberramd          #+#    #+#              #
-#    Updated: 2019/02/01 16:16:29 by tbottini         ###   ########.fr        #
+#    Updated: 2019/02/06 19:20:01 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ SRCS = 	fdf.c 		\
 		image.c		\
 		rmesh.c 	\
 		input.c 	\
-
 
 OBJS = $(SRCS:.c=.o)
 

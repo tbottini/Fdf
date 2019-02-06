@@ -1,6 +1,5 @@
 #include "fdf.h"
 
-
 t_vector2		*vct2_new(int x, int y)
 {
 	t_vector2		*new_vector2;

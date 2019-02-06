@@ -1,16 +1,20 @@
 ----etapes----
 
-//parseur
-//calculer taille fen pour taille maillage
+/parseur
+///calculer taille fen pour taille maillage
 ///recuperer la fenetre
-/model to view
-	-verifier que le point n est pas place en dehors de l ecran
-	-avoir plusieur perspective (orthograpique ? cavaliere?)
+///model to view
+	///verifier que le point n est pas place en dehors de l ///ecran
+	//avoir plusieur perspective (orthograpique ? cavaliere?)
 ///trait
-//relier le model rectangulaire
+///relier le model rectangulaire
 /input bouger
 
 
-modele isometrique dimetrique
+model dimetrique ?
 mouvement continue
+parsing gestion -1, gros fichier
+changement de couleurs
+affichage des touche
 
+nv parsing

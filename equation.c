@@ -43,8 +43,8 @@ t_vector2		*world_to_view(t_vector2 *cursor, t_camera cam, t_vector3 w_pos, floa
 			vct2_value(cursor, -1, -1);
 		else
 		{
-			cursor->x =	delta.x * 50 / scale + cam.size_x / 2;
-			cursor->y = delta.y * 50 / scale + cam.size_y / 2;
+			cursor->x =	delta.x * 10 * scale + cam.size_x / 2;
+			cursor->y = delta.y * 10 * scale + cam.size_y / 2;
 		}
 	}
 	return (cursor);

@@ -73,19 +73,22 @@ static void			trait_img_up(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsi
 
 void		trait(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigned int col)
 {
-	if (abs(vct2.y - vct1.y) < abs(vct2.x - vct1.x))
+	if (vct2.x != -1 && vct2.y != -1
+		&& vct1.x != -1 && vct1.y != -1)
 	{
-		if (vct1.x > vct2.x)
-			trait_img(fdf, vct2, vct1, col);
+		if (abs(vct2.y - vct1.y) < abs(vct2.x - vct1.x))
+		{
+			if (vct1.x > vct2.x)
+				trait_img(fdf, vct2, vct1, col);
+			else
+				trait_img(fdf, vct1, vct2, col);
+		}
 		else
-			trait_img(fdf, vct1, vct2, col);
+		{
+			if (vct1.y > vct2.y)
+				trait_img_up(fdf, vct2, vct1, col);
+			else
+				trait_img_up(fdf, vct1, vct2, col);
+		}
 	}
-	else
-	{
-		if (vct1.y > vct2.y)
-			trait_img_up(fdf, vct2, vct1, col);
-		else
-			trait_img_up(fdf, vct1, vct2, col);
-	}
-
 }

@@ -3,9 +3,17 @@
 
 void			ajust_cam(t_mlx_data *fdf)
 {
-	vct3_value(fdf->cam->position, -3 * (fdf->wires->size_x), fdf->wires->size_y / 2, -3 * (fdf->wires->size_x));
-	vct3_value(fdf->cam->rotation, 0,-47, 0);
-
+	if (fdf->cam->proj == 2)
+	{
+		vct3_value(fdf->cam->rotation, -45, 0, 45);
+		vct3_value(fdf->cam->position, 318 + fdf->wires->size_x / 2,
+								 318 + fdf->wires->size_y / 2, -450);
+	}
+	else if (fdf->cam->proj == 1)
+	{
+		vct3_value(fdf->cam->rotation, 0, 0, 0);
+		vct3_value(fdf->cam->position, fdf->wires->size_x / 2, fdf->wires->size_y / 2, -fdf->wires->size_x);
+	}
 }
 
 t_camera		*n_cam(int fov, int size_x, int size_y)
@@ -35,39 +43,44 @@ t_mlx_data		*mlx_data_get(char *screen_name, int fov, int ac, char **av)
 	int 		bpp;
 	int			endian;
 	int 		width;
-
 	if (!(ml = (t_mlx_data *)malloc(sizeof(t_mlx_data))))
 		return (NULL);
-	if (!(ml->wires = fdf_parseur(ac, av)) ||
-		!(ml->cam = n_cam(fov, ml->wires->size_x * 50,
-		ml->wires->size_y * 50)))
+	if (!(ml->wires = fdf_parseur(ac, av))
+		|| !(ml->cam = n_cam(fov, (ml->wires->size_x + ml->wires->size_y) * 8.66 * 3,
+		(ml->wires->size_x + ml->wires->size_y) * 15)))
 	{
 		free(ml);
 		return (NULL);
 	}
-	if (!(ml->mlx = mlx_init()) ||
-		!(ml->win = mlx_new_window(ml->mlx, ml->cam->size_x, ml->cam->size_y, screen_name)) ||
-		!(ml->img = mlx_new_image(ml, ml->cam->size_x, ml->cam->size_y)) ||
-		!(ml->screen = (unsigned int *)mlx_get_data_addr(ml->img,
+	if ((ml->wires->size_x + ml->wires->size_y) * 15 > 1080)
+		ml->wires->scale = 1080 / ((ml->wires->size_x + ml->wires->size_y) * 5.0);
+	else if ((ml->wires->size_x + ml->wires->size_y) * 8.66 * 3 > 1920)
+		ml->wires->scale = 1920 / ((ml->wires->size_x + ml->wires->size_y) * 8.66);
+	else
+		ml->wires->scale = 3;
+	if (!(ml->mlx = mlx_init())
+		|| !(ml->win = mlx_new_window(ml->mlx, ml->cam->size_x, ml->cam->size_y, screen_name))
+		|| !(ml->img = mlx_new_image(ml, ml->cam->size_x, ml->cam->size_y))
+		|| !(ml->screen = (unsigned int *)mlx_get_data_addr(ml->img,
 				&bpp, &width, &endian)))
 		return (NULL);
 	ml->mouse_pos = NULL;
 	return (ml);
 }
 
-
-
 int 			main(int ac, char **av)
 {
 	t_mlx_data		*fdf;
 
-	if (!(fdf = mlx_data_get("fdf", 75, ac, av)))
+	if (!(fdf = mlx_data_get("fdf", 90, ac, av)))
 		return (0);
 	ajust_cam(fdf);
+
 	draw_wires(fdf);
 	mlx_key_hook(fdf->win, &input_fdf, fdf);
 	mlx_hook(fdf->win, MotionNotify, PointerMotionMask, &mouse_motion, fdf);
-	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+
+	+*mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 	mlx_loop(fdf->mlx);
 	return (0);
 }

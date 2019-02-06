@@ -39,6 +39,7 @@
 # define PURPLE		color(255, 0, 255)
 # define CYAN		color(0, 255, 255)
 # define BLACK		color(0, 0, 0)
+# define BEIGE		color(245, 245, 210)
 # define PCHARRIE 	color(125, 0, 50)
 # define FRATARDI 	color(75, 0, 15)
 
@@ -58,8 +59,9 @@ typedef struct		s_vector3
 typedef struct 		s_rmesh
 {
 	char 			**wires;
-	unsigned char	size_x;
-	unsigned char	size_y;
+	int 			size_x;
+	int 			size_y;
+	float			scale;
 }					t_rmesh;
 
 typedef	struct 		s_world_obj
@@ -89,19 +91,22 @@ typedef struct 		s_mlx_data
 	t_vector2 		*mouse_pos;
 }					t_mlx_data;
 
-int 			draw_floor(t_mlx_data *fdf, t_vector2 cursor1, t_vector3 point, float scale);
+int 			parseur();
 int				input_fdf(int key, t_mlx_data *fdf);
 int 			draw_wires(t_mlx_data *fdf);
 unsigned int 	color(unsigned char r, unsigned char g, unsigned char b);
 void			pixel_img(t_mlx_data *fdf, t_vector2 vct, unsigned int color);
 void			trait(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigned int col);
+
 t_vector2		*vct2_new(int x, int y);
 t_vector2		*vct2_value(t_vector2 *vct, int x, int y);
 void			vct2_print(t_vector2 vct);
+
 t_vector3		*vct3_new(int x, int y, int z);
 t_vector3		*vct3_value(t_vector3 *vct, int x, int y, int z);
 void			vct3_print(char *info, t_vector3 vct);
 t_vector3		*vct3_add(t_vector3 *vct1, t_vector3 *vct2);
+
 t_vector3		*model_to_world(t_vector3 local_pos, t_vector3 trans, t_vector3 rot, int sca);
 t_vector2		*world_to_view(t_vector2 *cursor, t_camera cam, t_vector3 w_pos, float scale);
 t_vector3		*vct3_mul(t_vector3 *vct1, int mul);
@@ -115,5 +120,6 @@ int				divi(int a, int b);
 int				mul(int a, int b);
 t_vector3		*vct3_calc(t_vector3 *vct1, t_vector3 *vct2, int(*f)(int,int));
 int				mouse_motion(int x, int y, t_mlx_data *fdf);
+void			ajust_cam(t_mlx_data *fdf);
 #endif
 
