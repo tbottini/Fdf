@@ -35,5 +35,20 @@ int 			draw_wires(t_mlx_data *fdf)
 	wire_link(fdf, cursor, pos_point, fdf->wires->scale);
 	vct3_value(&pos_point, -100, 0, -100);
 	world_to_view(&cursor, *fdf->cam, pos_point, fdf->wires->scale);
+	print_input(fdf);
 	return (1);
+}
+
+void			rmesh_del(t_rmesh *rmesh)
+{
+	int i;
+
+	i = 0;
+	while (rmesh->wires[i])
+	{
+		free(rmesh->wires[i]);
+		i++;
+	}
+	free(rmesh->wires);
+	free(rmesh);
 }

@@ -68,11 +68,33 @@ t_mlx_data		*mlx_data_get(char *screen_name, int fov, int ac, char **av)
 	return (ml);
 }
 
+void			print_input(t_mlx_data *fdf)
+{
+	char s[30];
+
+	ft_strcpy(s, "W/A/S/D Move");
+	mlx_string_put(fdf->mlx, fdf->win, 10, 10, WHITE, s);
+	if (fdf->cam->proj == 2)
+	{
+		ft_strcpy(s, "P Conique Proj");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 30, WHITE, s);
+	}
+	else
+	{
+		ft_strcpy(s, "P Iso Proj");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 30, WHITE, s);
+		ft_strcpy(s, "Ctrl/Shift +/- FOV");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 50, WHITE, s);
+		ft_strcpy(s, "Mouse Turn Cam");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 70, WHITE, s);
+	}
+}
+
 int 			main(int ac, char **av)
 {
 	t_mlx_data		*fdf;
 
-	if (!(fdf = mlx_data_get("fdf", 90, ac, av)))
+	if (!(fdf = mlx_data_get("FDF", 90, ac, av)))
 		return (0);
 	ajust_cam(fdf);
 
@@ -80,7 +102,8 @@ int 			main(int ac, char **av)
 	mlx_key_hook(fdf->win, &input_fdf, fdf);
 	mlx_hook(fdf->win, MotionNotify, PointerMotionMask, &mouse_motion, fdf);
 
-	+*mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+	print_input(fdf);
 	mlx_loop(fdf->mlx);
 	return (0);
 }

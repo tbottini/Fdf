@@ -26,6 +26,7 @@
 # define KEY_I		34
 # define KEY_CTRL 	256
 # define KEY_SHIFT 	257
+# define KEY_ESC	53
 # define WHEEL_UP 	5
 # define WHEEL_DOWN 6
 # define RM_BUTTON	1
@@ -91,8 +92,6 @@ typedef struct 		s_mlx_data
 	t_vector2 		*mouse_pos;
 }					t_mlx_data;
 
-int 			parseur();
-int				input_fdf(int key, t_mlx_data *fdf);
 int 			draw_wires(t_mlx_data *fdf);
 unsigned int 	color(unsigned char r, unsigned char g, unsigned char b);
 void			pixel_img(t_mlx_data *fdf, t_vector2 vct, unsigned int color);
@@ -106,20 +105,26 @@ t_vector3		*vct3_new(int x, int y, int z);
 t_vector3		*vct3_value(t_vector3 *vct, int x, int y, int z);
 void			vct3_print(char *info, t_vector3 vct);
 t_vector3		*vct3_add(t_vector3 *vct1, t_vector3 *vct2);
-
-t_vector3		*model_to_world(t_vector3 local_pos, t_vector3 trans, t_vector3 rot, int sca);
-t_vector2		*world_to_view(t_vector2 *cursor, t_camera cam, t_vector3 w_pos, float scale);
 t_vector3		*vct3_mul(t_vector3 *vct1, int mul);
 t_vector3		*vct3_cpy(t_vector3 *vct1, t_vector3 *vct2);
 t_vector3		*vct3_negate(t_vector3 *vct);
 t_vector3		*vct3_rotation(t_vector3 *pos, t_vector3 rot);
-t_rmesh			*fdf_parseur(int ac, char **av);
+t_vector3		*vct3_calc(t_vector3 *vct1, t_vector3 *vct2, int(*f)(int,int));
+
 int				sub(int a, int b);
 int				add(int a, int b);
 int				divi(int a, int b);
 int				mul(int a, int b);
-t_vector3		*vct3_calc(t_vector3 *vct1, t_vector3 *vct2, int(*f)(int,int));
+
+t_vector3		*model_to_world(t_vector3 local_pos, t_vector3 trans, t_vector3 rot, int sca);
+t_vector2		*world_to_view(t_vector2 *cursor, t_camera cam, t_vector3 w_pos, float scale);
+
+t_rmesh			*fdf_parseur(int ac, char **av);
+void			rmesh_del(t_rmesh *rmesh);
+
 int				mouse_motion(int x, int y, t_mlx_data *fdf);
 void			ajust_cam(t_mlx_data *fdf);
+int				input_fdf(int key, t_mlx_data *fdf);
+void			print_input(t_mlx_data *fdf);
 #endif
 

@@ -1,6 +1,6 @@
 ----etapes----
 
-/parseur
+///parseur
 ///calculer taille fen pour taille maillage
 ///recuperer la fenetre
 ///model to view
@@ -12,9 +12,11 @@
 
 
 model dimetrique ?
-mouvement continue
-parsing gestion -1, gros fichier
+mouvement continue ?
 changement de couleurs
-affichage des touche
+//affichage des touche
 
-nv parsing
+mesh arriere bug
+
+
+mlx_string_put(mlx, win, x, y, color, string);

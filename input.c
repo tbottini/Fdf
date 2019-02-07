@@ -53,6 +53,18 @@ void			input_movement_ortho(int key, t_mlx_data *fdf)
 	}
 }
 
+void			close_window(t_mlx_data *fdf)
+{
+	rmesh_del(fdf->wires);
+	free(fdf->cam->position);
+	free(fdf->cam->rotation);
+	free(fdf->cam);
+	free(fdf->mouse_pos);
+	mlx_destroy_image(fdf->mlx, fdf->img);
+	mlx_destroy_window(fdf->mlx, fdf->win);
+	exit(0);
+}
+
 
 void			input_fov(int key, t_mlx_data *fdf)
 {
@@ -64,7 +76,8 @@ void			input_fov(int key, t_mlx_data *fdf)
 
 int				input_fdf(int key, t_mlx_data *fdf)
 {
-	vct3_print("position", *fdf->cam->position);
+	if (key == KEY_ESC)
+		close_window(fdf);
 	if (key == KEY_W || key == KEY_A || key == KEY_D || key == KEY_S)
 	{
 		if (fdf->cam->proj == 1)
@@ -88,6 +101,7 @@ int				input_fdf(int key, t_mlx_data *fdf)
 	ft_bzero(fdf->screen, fdf->cam->size_x * fdf->cam->size_y * 4);
 	draw_wires(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+	print_input(fdf);
 	return (1);
 }
 
@@ -110,6 +124,7 @@ int 			mouse_motion(int x, int y, t_mlx_data *fdf)
 		ft_bzero(fdf->screen, fdf->cam->size_x * fdf->cam->size_y * 4);
 		draw_wires(fdf);
 		mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+		print_input(fdf);
 	}
 	return (0);
 }
