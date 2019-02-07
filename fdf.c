@@ -1,18 +1,17 @@
 #include "fdf.h"
 
-
 void			ajust_cam(t_mlx_data *fdf)
 {
 	if (fdf->cam->proj == 2)
 	{
 		vct3_value(fdf->cam->rotation, -45, 0, 45);
-		vct3_value(fdf->cam->position, 318 + fdf->wires->size_x / 2,
-								 318 + fdf->wires->size_y / 2, -450);
+		vct3_value(fdf->cam->position, 636 + fdf->wires->size_x / 2,
+								 636 + fdf->wires->size_y / 2, -900);
 	}
 	else if (fdf->cam->proj == 1)
 	{
 		vct3_value(fdf->cam->rotation, 0, 0, 0);
-		vct3_value(fdf->cam->position, fdf->wires->size_x / 2, fdf->wires->size_y / 2, -fdf->wires->size_x);
+		vct3_value(fdf->cam->position, fdf->wires->size_x / 2, fdf->wires->size_y / 2, -100);
 	}
 }
 
@@ -30,6 +29,10 @@ t_camera		*n_cam(int fov, int size_x, int size_y)
 		size_x = 1920;
 	if (size_y > 1080)
 		size_y = 1080;
+	if (size_x < 450)
+		size_x = 450;
+	if (size_y < 450)
+		size_y = 450;
 	camera->size_x = size_x;
 	camera->size_y = size_y;
 	camera->fov = fov;
@@ -65,6 +68,9 @@ t_mlx_data		*mlx_data_get(char *screen_name, int fov, int ac, char **av)
 				&bpp, &width, &endian)))
 		return (NULL);
 	ml->mouse_pos = NULL;
+	ml->scale_z = 2;
+	ml->color1 = WHITE;
+	ml->color2 = WHITE;
 	return (ml);
 }
 
@@ -72,21 +78,25 @@ void			print_input(t_mlx_data *fdf)
 {
 	char s[30];
 
-	ft_strcpy(s, "W/A/S/D Move");
+	ft_strcpy(s, "Esc Leave Fdf");
 	mlx_string_put(fdf->mlx, fdf->win, 10, 10, WHITE, s);
+	ft_strcpy(s, "W/A/S/D Move");
+	mlx_string_put(fdf->mlx, fdf->win, 10, 30, WHITE, s);
 	if (fdf->cam->proj == 2)
 	{
 		ft_strcpy(s, "P Conique Proj");
-		mlx_string_put(fdf->mlx, fdf->win, 10, 30, WHITE, s);
+		mlx_string_put(fdf->mlx, fdf->win, 10, 50, WHITE, s);
 	}
 	else
 	{
-		ft_strcpy(s, "P Iso Proj");
-		mlx_string_put(fdf->mlx, fdf->win, 10, 30, WHITE, s);
-		ft_strcpy(s, "Ctrl/Shift +/- FOV");
+		ft_strcpy(s, "R/F Up/Down");
 		mlx_string_put(fdf->mlx, fdf->win, 10, 50, WHITE, s);
-		ft_strcpy(s, "Mouse Turn Cam");
+		ft_strcpy(s, "P Iso Proj");
 		mlx_string_put(fdf->mlx, fdf->win, 10, 70, WHITE, s);
+		ft_strcpy(s, "Ctrl/Shift +/- FOV");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 90, WHITE, s);
+		ft_strcpy(s, "Mouse Turn Cam");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 110, WHITE, s);
 	}
 }
 

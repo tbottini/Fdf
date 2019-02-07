@@ -13,6 +13,13 @@
 # define PI 3.1415926535
 
 # define KEY_W 		13
+# define KEY_Y		16
+# define KEY_U 		32
+# define KEY_I 		34
+# define KEY_H 		4
+# define KEY_J		38
+# define KEY_K		40
+
 # define KEY_A 		0
 # define KEY_S 		1
 # define KEY_D 		2
@@ -24,6 +31,8 @@
 # define KEY_O		31
 # define KEY_U		32
 # define KEY_I		34
+# define KEY_T 		17
+# define KEY_G		5
 # define KEY_CTRL 	256
 # define KEY_SHIFT 	257
 # define KEY_ESC	53
@@ -90,6 +99,9 @@ typedef struct 		s_mlx_data
 	t_camera		*cam;
 	t_rmesh			*wires;
 	t_vector2 		*mouse_pos;
+	int 			scale_z;
+	int 			color1;
+	int 			color2;
 }					t_mlx_data;
 
 int 			draw_wires(t_mlx_data *fdf);

@@ -86,9 +86,9 @@ int				input_fdf(int key, t_mlx_data *fdf)
 			input_movement_ortho(key, fdf);
 	}
 	else if (key == KEY_R)
-		fdf->cam->position->y -= 4;
+		fdf->cam->position->y -= 15;
 	else if (key == KEY_F)
-		fdf->cam->position->y += 4;
+		fdf->cam->position->y += 15;
 	if (key == KEY_CTRL || key == KEY_SHIFT)
 		input_fov(key, fdf);
 	else if (key == KEY_P)
@@ -98,6 +98,10 @@ int				input_fdf(int key, t_mlx_data *fdf)
 		fdf->cam->proj = (fdf->cam->proj == 1) ? (2) : (1);
 		ajust_cam(fdf);
 	}
+	else if (key == KEY_T)
+		fdf->scale_z += 1;
+	else if (key == KEY_G)
+		fdf->scale_z -= 1;
 	ft_bzero(fdf->screen, fdf->cam->size_x * fdf->cam->size_y * 4);
 	draw_wires(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);

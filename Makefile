@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by yberramd          #+#    #+#              #
-#    Updated: 2019/02/06 19:20:01 by tbottini         ###   ########.fr        #
+#    Updated: 2019/02/07 21:35:46 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIB = libft/libft.a -L /usr/local/lib/ -lmlx -framework OpenGL \
 SRCS = 	fdf.c 		\
 		equation.c 	\
 		parseur.c	\
-		vector.c	\
+		vector2.c	\
 		vector3.c	\
 		image.c		\
 		rmesh.c 	\
