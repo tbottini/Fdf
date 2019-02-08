@@ -39,6 +39,7 @@ int 		pars(int fd, t_vector2 *len)
 	int 	nb_elem_ligne;
 
 	len->x = 0;
+	len->y = 0;
 	i = 0;
 	nb_elem_ligne = 0;
 	ret = 0;
@@ -55,6 +56,7 @@ int 		pars(int fd, t_vector2 *len)
 		len->y++;
 		i = 0;
 	}
+	free(line);
 	if (ret == -1)
 		return (0);
 	close (fd);
@@ -103,6 +105,7 @@ t_rmesh		*get_rmesh(int fd, t_vector2 len)
 		free(line);
 	}
 	wires->size_x = len.x;
+	close(fd);
 	return (wires);
 }
 

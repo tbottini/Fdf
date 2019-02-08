@@ -40,36 +40,50 @@ t_camera		*n_cam(int fov, int size_x, int size_y)
 	return (camera);
 }
 
-t_mlx_data		*mlx_data_get(char *screen_name, int fov, int ac, char **av)
+t_mlx_data		*mlx_data_connection(t_mlx_data *ml, char *name)
 {
-	t_mlx_data	*ml;
 	int 		bpp;
 	int			endian;
 	int 		width;
+
+	if (!(ml->mlx = mlx_init()))
+		return (NULL);
+	if (!(ml->win = mlx_new_window(ml->mlx, ml->cam->size_x, ml->cam->size_y, name)))
+		return (NULL);
+	if (!(ml->img = mlx_new_image(ml, ml->cam->size_x, ml->cam->size_y)))
+		return (NULL);
+
+	if (!(ml->screen = (unsigned int *)mlx_get_data_addr(ml->img,&bpp, &width, &endian)))
+		return (NULL);
+	return (ml);
+}
+
+t_mlx_data		*mlx_data_get(char *screen_name, int fov, int ac, char **av)
+{
+	t_mlx_data	*ml;
+
 	if (!(ml = (t_mlx_data *)malloc(sizeof(t_mlx_data))))
 		return (NULL);
-	if (!(ml->wires = fdf_parseur(ac, av))
-		|| !(ml->cam = n_cam(fov, (ml->wires->size_x + ml->wires->size_y) * 8.66 * 3,
-		(ml->wires->size_x + ml->wires->size_y) * 15)))
-	{
-		free(ml);
+	if (!(ml->wires = fdf_parseur(ac, av)))
 		return (NULL);
-	}
+	if (!(ml->cam = n_cam(fov, (ml->wires->size_x + ml->wires->size_y) * 8.66 * 3,
+		(ml->wires->size_x + ml->wires->size_y) * 15)))
+		return (NULL);
+	(void)screen_name;
+
 	if ((ml->wires->size_x + ml->wires->size_y) * 15 > 1080)
 		ml->wires->scale = 1080 / ((ml->wires->size_x + ml->wires->size_y) * 5.0);
 	else if ((ml->wires->size_x + ml->wires->size_y) * 8.66 * 3 > 1920)
 		ml->wires->scale = 1920 / ((ml->wires->size_x + ml->wires->size_y) * 8.66);
 	else
 		ml->wires->scale = 3;
-	if (!(ml->mlx = mlx_init())
-		|| !(ml->win = mlx_new_window(ml->mlx, ml->cam->size_x, ml->cam->size_y, screen_name))
-		|| !(ml->img = mlx_new_image(ml, ml->cam->size_x, ml->cam->size_y))
-		|| !(ml->screen = (unsigned int *)mlx_get_data_addr(ml->img,
-				&bpp, &width, &endian)))
-		return (NULL);
+
 	ml->mouse_pos = NULL;
-	ml->scale_z = 2;
+	ml->scale_z = 1;
 	color_stock_set(&ml->cs);
+
+	if (!(mlx_data_connection(ml, screen_name)))
+		return (NULL);
 	return (ml);
 }
 

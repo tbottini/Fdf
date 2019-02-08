@@ -59,10 +59,12 @@ void			close_window(t_mlx_data *fdf)
 	free(fdf->cam->position);
 	free(fdf->cam->rotation);
 	free(fdf->cam);
-	//if (fdf->mouse_pos)
+	if (fdf->mouse_pos)
 		free(fdf->mouse_pos);
 	mlx_destroy_image(fdf->mlx, fdf->img);
 	mlx_destroy_window(fdf->mlx, fdf->win);
+	free(fdf->mlx);
+	free(fdf);
 	exit(0);
 }
 
@@ -77,8 +79,6 @@ void			input_fov(int key, t_mlx_data *fdf)
 
 int				input_fdf(int key, t_mlx_data *fdf)
 {
-	if (key == KEY_ESC)
-		close_window(fdf);
 	if (key == KEY_W || key == KEY_A || key == KEY_D || key == KEY_S)
 	{
 		if (fdf->cam->proj == 1)
@@ -109,6 +109,8 @@ int				input_fdf(int key, t_mlx_data *fdf)
 	draw_wires(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 	print_input(fdf);
+	if (key == KEY_ESC)
+		close_window(fdf);
 	return (1);
 }
 
