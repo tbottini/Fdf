@@ -10,7 +10,7 @@ int				wire_link(t_mlx_data *fdf, t_vector2 cursor1, t_vector3 point, float scal
 		vct3_value(&pos_point, point.x + 1, point.y,
 			fdf->scale_z * -fdf->wires->wires[(int)point.y][(int)point.x + 1] / 5);
 		world_to_view(&cursor, *fdf->cam, pos_point, scale);
-		trait(fdf, cursor1, cursor, fdf->color1);
+		trait(fdf, cursor1, cursor, cs_color(fdf->cs, 1));
 		wire_link(fdf, cursor, pos_point, scale);
 	}
 	if (point.y + 1 < fdf->wires->size_y)
@@ -18,7 +18,7 @@ int				wire_link(t_mlx_data *fdf, t_vector2 cursor1, t_vector3 point, float scal
 		vct3_value(&pos_point, point.x, point.y + 1,
 			fdf->scale_z * -fdf->wires->wires[(int)point.y + 1][(int)point.x] / 5);
 		world_to_view(&cursor, *fdf->cam, pos_point, scale);
-		trait(fdf, cursor1, cursor, fdf->color2);
+		trait(fdf, cursor1, cursor, cs_color(fdf->cs, 2));
 		if (pos_point.x == 0)
 			wire_link(fdf, cursor, pos_point, scale);
 	}

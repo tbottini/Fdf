@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by yberramd          #+#    #+#              #
-#    Updated: 2019/02/07 21:35:46 by tbottini         ###   ########.fr        #
+#    Updated: 2019/02/08 15:58:17 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS = 	fdf.c 		\
 		image.c		\
 		rmesh.c 	\
 		input.c 	\
+		color.c 	\
 
 OBJS = $(SRCS:.c=.o)
 
@@ -44,6 +45,14 @@ fclean : clean
 	make fclean -C libft/
 	rm -rf $(NAME)
 
+debug : $(OBJS)
+	make -C libft/
+	$(CC) -g -o $(NAME) $(CFLAGS) $(SRCS) $(LIB)
+
+segv : $(OBJS)
+	make -C libft/
+	$(CC) -g -fsanitize=address -o $(NAME) $(CFLAGS) $(SRCS) $(LIB) 
+
 re : fclean all
 
-.PHONY: all clean flcean re
+.PHONY: all clean flcean re debug segv

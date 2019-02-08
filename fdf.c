@@ -69,8 +69,7 @@ t_mlx_data		*mlx_data_get(char *screen_name, int fov, int ac, char **av)
 		return (NULL);
 	ml->mouse_pos = NULL;
 	ml->scale_z = 2;
-	ml->color1 = WHITE;
-	ml->color2 = WHITE;
+	color_stock_set(&ml->cs);
 	return (ml);
 }
 
@@ -111,7 +110,6 @@ int 			main(int ac, char **av)
 	draw_wires(fdf);
 	mlx_key_hook(fdf->win, &input_fdf, fdf);
 	mlx_hook(fdf->win, MotionNotify, PointerMotionMask, &mouse_motion, fdf);
-
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 	print_input(fdf);
 	mlx_loop(fdf->mlx);

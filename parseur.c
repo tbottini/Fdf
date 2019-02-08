@@ -6,7 +6,8 @@ int			ft_atoc(char *str, int *i, int *nbr)
 
 	*nbr = 0;
 	sign = 1;
-	while (!ft_isdigit(str[*i]) && !(ft_isdigit(str[*i + 1]) && str[*i] == '-')
+
+	while (!ft_isdigit(str[*i]) && !(str[*i] == '-' && ft_isdigit(str[*i + 1]))
 		&& str[*i] != '\n' && str[*i])
 		*i = *i + 1;
 	if (str[*i] == '\n')
@@ -38,7 +39,6 @@ int 		pars(int fd, t_vector2 *len)
 	int 	nb_elem_ligne;
 
 	len->x = 0;
-	len->y = 0;
 	i = 0;
 	nb_elem_ligne = 0;
 	ret = 0;

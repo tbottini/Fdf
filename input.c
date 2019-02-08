@@ -59,7 +59,8 @@ void			close_window(t_mlx_data *fdf)
 	free(fdf->cam->position);
 	free(fdf->cam->rotation);
 	free(fdf->cam);
-	free(fdf->mouse_pos);
+	//if (fdf->mouse_pos)
+		free(fdf->mouse_pos);
 	mlx_destroy_image(fdf->mlx, fdf->img);
 	mlx_destroy_window(fdf->mlx, fdf->win);
 	exit(0);
@@ -102,6 +103,8 @@ int				input_fdf(int key, t_mlx_data *fdf)
 		fdf->scale_z += 1;
 	else if (key == KEY_G)
 		fdf->scale_z -= 1;
+	if (key  == KEY_U || key == KEY_J || key == KEY_H || key == KEY_Y)
+		input_color(&fdf->cs, key);
 	ft_bzero(fdf->screen, fdf->cam->size_x * fdf->cam->size_y * 4);
 	draw_wires(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
@@ -113,16 +116,16 @@ int 			mouse_motion(int x, int y, t_mlx_data *fdf)
 {
 	t_vector2 tmp;
 
+	if (fdf->mouse_pos == NULL)
+	{
+		if (!(fdf->mouse_pos = vct2_new(x / 2, y / 3)))
+			return (-1);
+		return (0);
+	}
+	vct2_value(&tmp, x / 2 - fdf->mouse_pos->x, y / 3 - fdf->mouse_pos->y);
+	vct2_value(fdf->mouse_pos, x / 2, y / 3);
 	if (fdf->cam->proj == 1)
 	{
-		if (fdf->mouse_pos == NULL)
-		{
-			if (!(fdf->mouse_pos = vct2_new(x / 2, y / 3)))
-				return (-1);
-			return (0);
-		}
-		vct2_value(&tmp, x / 2 - fdf->mouse_pos->x, y / 3 - fdf->mouse_pos->y);
-		vct2_value(fdf->mouse_pos, x / 2, y / 3);
 		fdf->cam->rotation->y -= tmp.x ;
 		fdf->cam->rotation->x += tmp.y ;
 		ft_bzero(fdf->screen, fdf->cam->size_x * fdf->cam->size_y * 4);

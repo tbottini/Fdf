@@ -90,6 +90,15 @@ typedef struct 		s_camera
 	char			proj;
 }					t_camera;
 
+typedef struct 		s_color_stock
+{
+	int 			color1;
+	int 			color2;
+	int 			color_s1;
+	int 			color_s2;
+	int 			color_stock[11];
+}					t_color_stock;
+
 typedef struct 		s_mlx_data
 {
 	void 			*mlx;
@@ -100,8 +109,7 @@ typedef struct 		s_mlx_data
 	t_rmesh			*wires;
 	t_vector2 		*mouse_pos;
 	int 			scale_z;
-	int 			color1;
-	int 			color2;
+	t_color_stock   cs;
 }					t_mlx_data;
 
 int 			draw_wires(t_mlx_data *fdf);
@@ -138,5 +146,9 @@ int				mouse_motion(int x, int y, t_mlx_data *fdf);
 void			ajust_cam(t_mlx_data *fdf);
 int				input_fdf(int key, t_mlx_data *fdf);
 void			print_input(t_mlx_data *fdf);
+
+void			color_stock_set(t_color_stock *cs);
+int 			input_color(t_color_stock *cs, int key);
+int 			cs_color(t_color_stock cs, char color);
 #endif
 
