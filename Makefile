@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by yberramd          #+#    #+#              #
-#    Updated: 2019/02/08 15:58:17 by tbottini         ###   ########.fr        #
+#    Updated: 2019/02/09 16:27:20 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,15 +19,18 @@ CFLAGS = -Wall -Wextra -Werror -I /usr/local/include
 LIB = libft/libft.a -L /usr/local/lib/ -lmlx -framework OpenGL \
 		-framework AppKit -lm
 
-SRCS = 	fdf.c 		\
-		equation.c 	\
-		parseur.c	\
-		vector2.c	\
-		vector3.c	\
-		image.c		\
-		rmesh.c 	\
-		input.c 	\
-		color.c 	\
+SRCS = 	fdf.c 			\
+		mlx_data.c 		\
+		equation.c 		\
+		parseur.c		\
+		vector2.c		\
+		vector3.c		\
+		vector3_calc.c	\
+		camera.c 		\
+		image.c			\
+		rmesh.c 		\
+		input.c 		\
+		color.c 		\
 
 OBJS = $(SRCS:.c=.o)
 
@@ -51,7 +54,7 @@ debug : $(OBJS)
 
 segv : $(OBJS)
 	make -C libft/
-	$(CC) -g -fsanitize=address -o $(NAME) $(CFLAGS) $(SRCS) $(LIB) 
+	$(CC) -g -fsanitize=address -o $(NAME) $(CFLAGS) $(SRCS) $(LIB)
 
 re : fclean all
 

@@ -1,16 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/09 15:28:34 by tbottini          #+#    #+#             */
+/*   Updated: 2019/02/09 17:03:07 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FDF_H
 # define FDF_H
 
-#include "libft/libft.h"
-#include "mlx.h"
-#include <math.h>
-#include "/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/X.h"
+# include "libft/libft.h"
+# include "mlx.h"
+# include <math.h>
+# include "/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/X.h"
 
 # define SCREEN_X 800
 # define SCREEN_Y 800
-
 # define PI 3.1415926535
-
 # define KEY_W 		13
 # define KEY_Y		16
 # define KEY_U 		32
@@ -18,7 +28,6 @@
 # define KEY_H 		4
 # define KEY_J		38
 # define KEY_K		40
-
 # define KEY_A 		0
 # define KEY_S 		1
 # define KEY_D 		2
@@ -39,115 +48,126 @@
 # define WHEEL_DOWN 6
 # define RM_BUTTON	1
 # define LM_BUTTON	2
+# define WHITE		rgb_color(255, 255, 255)
+# define BLUE		rgb_color(0, 0, 255)
+# define RED		rgb_color(255, 0, 0)
+# define GREEN		rgb_color(0, 255, 0)
+# define YELLOW		rgb_color(255, 255, 0)
+# define PURPLE		rgb_color(255, 0, 255)
+# define CYAN		rgb_color(0, 255, 255)
+# define BLACK		rgb_color(0, 0, 0)
+# define BEIGE		rgb_color(245, 245, 210)
+# define PCHARRIE 	rgb_color(125, 0, 50)
+# define FRATARDI 	rgb_color(75, 0, 15)
 
-# define WHITE		color(255, 255, 255)
-# define BLUE		color(0, 0, 255)
-# define RED		color(255, 0, 0)
-# define GREEN		color(0, 255, 0)
-# define YELLOW		color(255, 255, 0)
-# define PURPLE		color(255, 0, 255)
-# define CYAN		color(0, 255, 255)
-# define BLACK		color(0, 0, 0)
-# define BEIGE		color(245, 245, 210)
-# define PCHARRIE 	color(125, 0, 50)
-# define FRATARDI 	color(75, 0, 15)
-
-typedef struct 		s_vector2
+typedef struct		s_col
 {
-	int x;
-	int y;
-}					t_vector2;
+	unsigned int	c;
+}					t_col;
 
-typedef struct		s_vector3
+typedef struct		s_vct2
 {
-	float x;
-	float y;
-	float z;
-}					t_vector3;
+	int				x;
+	int				y;
+}					t_vct2;
 
-typedef struct 		s_rmesh
+typedef struct		s_vct3
 {
-	char 			**wires;
-	int 			size_x;
-	int 			size_y;
+	float			x;
+	float			y;
+	float			z;
+}					t_vct3;
+
+typedef struct		s_rmesh
+{
+	char			**wires;
+	int				x;
+	int				y;
 	float			scale;
 }					t_rmesh;
 
-typedef	struct 		s_world_obj
+typedef	struct		s_world_obj
 {
-	t_vector3		*position;
-	t_vector3		*rotation;
+	t_vct3			*position;
+	t_vct3			*rotation;
 }					t_world_obj;
 
-typedef struct 		s_camera
+typedef struct		s_camera
 {
-	t_vector3 		*position;
-	t_vector3		*rotation;
-	int 			size_x;
-	int 			size_y;
-	int 			fov;
+	t_vct3			*position;
+	t_vct3			*rotation;
+	int				x;
+	int				y;
+	int				fov;
 	char			proj;
 }					t_camera;
 
-typedef struct 		s_color_stock
+typedef struct		s_color_stock
 {
-	int 			color1;
-	int 			color2;
-	int 			color_s1;
-	int 			color_s2;
-	int 			color_stock[11];
+	t_col			color1;
+	t_col			color2;
+	int				color_s1;
+	int				color_s2;
+	t_col			color_stock[11];
 }					t_color_stock;
 
-typedef struct 		s_mlx_data
+typedef struct		s_mlx_data
 {
-	void 			*mlx;
-	void 			*win;
-	void 			*img;
-	unsigned int 	*screen;
+	void			*mlx;
+	void			*win;
+	void			*img;
+	unsigned		*screen;
 	t_camera		*cam;
 	t_rmesh			*wires;
-	t_vector2 		*mouse_pos;
-	int 			scale_z;
-	t_color_stock   cs;
+	t_vct2			*mouse_pos;
+	int				scale_z;
+	t_color_stock	cs;
 }					t_mlx_data;
 
-int 			draw_wires(t_mlx_data *fdf);
-unsigned int 	color(unsigned char r, unsigned char g, unsigned char b);
-void			pixel_img(t_mlx_data *fdf, t_vector2 vct, unsigned int color);
-void			trait(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigned int col);
+t_vct2				*vct2_new(int x, int y);
+t_vct2				*vct2_value(t_vct2 *vct, int x, int y);
+void				vct2_print(t_vct2 vct);
+t_vct3				*vct3_new(int x, int y, int z);
+t_vct3				*vct3_value(t_vct3 *vct, int x, int y, int z);
+void				vct3_print(char *info, t_vct3 vct);
+t_vct3				*vct3_add(t_vct3 *vct1, t_vct3 *vct2);
+t_vct3				*vct3_mul(t_vct3 *vct1, int mul);
+t_vct3				*vct3_cpy(t_vct3 *vct1, t_vct3 *vct2);
+t_vct3				*vct3_negate(t_vct3 *vct);
+t_vct3				*vct3_rotation(t_vct3 *pos, t_vct3 rot);
+t_vct3				*vct3_calc(t_vct3 *vct1, t_vct3 *vct2,
+							int(*f)(int, int));
+int					rmesh_draw(t_mlx_data *fdf);
+void				rmesh_del(t_rmesh *rmesh);
+t_camera			*camera_new(int fov, int size_x, int size_y);
+void				camera_ajust(t_mlx_data *fdf);
+void				camera_del(t_camera *cam);
+int					sub(int a, int b);
+int					add(int a, int b);
+int					divi(int a, int b);
+int					mul(int a, int b);
+void				color_stock_set(t_color_stock *cs);
+int					input_color(t_color_stock *cs, int key);
+t_col				cs_color(t_color_stock cs, char color);
+t_mlx_data			*mlx_data_get(char *screen_name, int fov, int ac,
+							char **av);
+void				mlx_data_close(t_mlx_data *fdf);
+void				fdf_refresh(t_mlx_data *fdf);
+unsigned int		rgb_color(unsigned char r, unsigned char g,
+							unsigned char b);
+void				pixel_img(t_mlx_data *fdf, t_vct2 vct,
+							t_col color);
+void				trait(t_mlx_data *fdf, t_vct2 vct1, t_vct2 vct2,
+							t_col col);
+t_vct3				*model_to_world(t_vct3 local_pos, t_vct3 trans, t_vct3 rot,
+							int sca);
+t_vct2				*world_to_view(t_vct2 *cursor, t_camera cam,
+							t_vct3 w_pos, float scale);
+t_rmesh				*fdf_parseur(int ac, char **av);
+int					mouse_motion(int x, int y, t_mlx_data *fdf);
+void				ajust_cam(t_mlx_data *fdf);
+int					input_fdf(int key, t_mlx_data *fdf);
+void				print_input(t_mlx_data *fdf);
+int					wall_nb(int nb, int min, int max);
 
-t_vector2		*vct2_new(int x, int y);
-t_vector2		*vct2_value(t_vector2 *vct, int x, int y);
-void			vct2_print(t_vector2 vct);
-
-t_vector3		*vct3_new(int x, int y, int z);
-t_vector3		*vct3_value(t_vector3 *vct, int x, int y, int z);
-void			vct3_print(char *info, t_vector3 vct);
-t_vector3		*vct3_add(t_vector3 *vct1, t_vector3 *vct2);
-t_vector3		*vct3_mul(t_vector3 *vct1, int mul);
-t_vector3		*vct3_cpy(t_vector3 *vct1, t_vector3 *vct2);
-t_vector3		*vct3_negate(t_vector3 *vct);
-t_vector3		*vct3_rotation(t_vector3 *pos, t_vector3 rot);
-t_vector3		*vct3_calc(t_vector3 *vct1, t_vector3 *vct2, int(*f)(int,int));
-
-int				sub(int a, int b);
-int				add(int a, int b);
-int				divi(int a, int b);
-int				mul(int a, int b);
-
-t_vector3		*model_to_world(t_vector3 local_pos, t_vector3 trans, t_vector3 rot, int sca);
-t_vector2		*world_to_view(t_vector2 *cursor, t_camera cam, t_vector3 w_pos, float scale);
-
-t_rmesh			*fdf_parseur(int ac, char **av);
-void			rmesh_del(t_rmesh *rmesh);
-
-int				mouse_motion(int x, int y, t_mlx_data *fdf);
-void			ajust_cam(t_mlx_data *fdf);
-int				input_fdf(int key, t_mlx_data *fdf);
-void			print_input(t_mlx_data *fdf);
-
-void			color_stock_set(t_color_stock *cs);
-int 			input_color(t_color_stock *cs, int key);
-int 			cs_color(t_color_stock cs, char color);
 #endif
-

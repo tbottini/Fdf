@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector3.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/09 16:26:12 by tbottini          #+#    #+#             */
+/*   Updated: 2019/02/09 17:12:39 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-t_vector3		*vct3_new(int x, int y, int z)
+t_vct3		*vct3_new(int x, int y, int z)
 {
-	t_vector3	*new_vct3;
+	t_vct3	*new_vct3;
 
-	if (!(new_vct3 = (t_vector3 *)malloc(sizeof(t_vector3))))
+	if (!(new_vct3 = (t_vct3 *)malloc(sizeof(t_vct3))))
 		return (NULL);
 	new_vct3->x = x;
 	new_vct3->y = y;
@@ -12,7 +24,7 @@ t_vector3		*vct3_new(int x, int y, int z)
 	return (new_vct3);
 }
 
-t_vector3		*vct3_value(t_vector3 *vct, int x, int y, int z)
+t_vct3		*vct3_value(t_vct3 *vct, int x, int y, int z)
 {
 	vct->x = x;
 	vct->y = y;
@@ -20,26 +32,7 @@ t_vector3		*vct3_value(t_vector3 *vct, int x, int y, int z)
 	return (vct);
 }
 
-void			vct3_print(char *info, t_vector3 vct)
-{
-	ft_putstr(info);
-	ft_putstr(" x : ");
-	ft_putnbr(vct.x);
-	ft_putstr(" y : ");
-	ft_putnbr(vct.y);
-	ft_putstr(" z : ");
-	ft_putnbrcr(vct.z);
-}
-
-t_vector3		*vct3_add(t_vector3 *vct1, t_vector3 *vct2)
-{
-	vct1->x += vct2->x;
-	vct1->y += vct2->y;
-	vct1->z += vct2->z;
-	return (vct1);
-}
-
-t_vector3		*vct3_cpy(t_vector3 *vct1, t_vector3 *vct2)
+t_vct3		*vct3_cpy(t_vct3 *vct1, t_vct3 *vct2)
 {
 	vct1->x = vct2->x;
 	vct1->y = vct2->y;
@@ -47,7 +40,7 @@ t_vector3		*vct3_cpy(t_vector3 *vct1, t_vector3 *vct2)
 	return (vct1);
 }
 
-t_vector3		*vct3_mul(t_vector3 *vct1, int mul)
+t_vct3		*vct3_mul(t_vct3 *vct1, int mul)
 {
 	vct1->x *= mul;
 	vct1->y *= mul;
@@ -55,38 +48,10 @@ t_vector3		*vct3_mul(t_vector3 *vct1, int mul)
 	return (vct1);
 }
 
-t_vector3		*vct3_negate(t_vector3 *vct)
+t_vct3		*vct3_negate(t_vct3 *vct)
 {
 	vct->x -= vct->x;
 	vct->y -= vct->y;
 	vct->z -= vct->z;
 	return (vct);
-}
-
-int  sub(int a, int b)
-{
-	return (a - b);
-}
-
-int add(int a, int b)
-{
-	return (a + b);
-}
-
-int divi(int a, int b)
-{
-	return (a / b);
-}
-
-int mul(int a, int b)
-{
-	return (a * b);
-}
-
-t_vector3		*vct3_calc(t_vector3 *vct1, t_vector3 *vct2, int(*f)(int,int))
-{
-	vct1->x = f(vct1->x, vct2->x);
-	vct1->y = f(vct1->y, vct2->y);
-	vct1->z = f(vct1->z, vct2->z);
-	return (vct1);
 }

@@ -1,55 +1,66 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   equation.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/09 16:25:17 by tbottini          #+#    #+#             */
+/*   Updated: 2019/02/09 16:55:28 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-t_vector3			*model_to_world(t_vector3 local_pos, t_vector3 trans, t_vector3 rot, int sca)
+t_vct3			*model_to_world(t_vct3 l_pos, t_vct3 tran, t_vct3 rot, int sca)
 {
-	t_vector3		*w_pos;
-	t_vector3		*tmp;
+	t_vct3		*w_pos;
+	t_vct3		*tmp;
 
-	if (!(w_pos = (t_vector3 *)malloc(sizeof(t_vector3))))
+	if (!(w_pos = (t_vct3 *)malloc(sizeof(t_vct3))))
 		return (NULL);
-	if (!(tmp = (t_vector3 *)malloc(sizeof(t_vector3))))
+	if (!(tmp = (t_vct3 *)malloc(sizeof(t_vct3))))
 	{
 		free(w_pos);
 		return (NULL);
 	}
-	vct3_cpy(w_pos, vct3_add(&local_pos, &trans));
+	vct3_cpy(w_pos, vct3_calc(&l_pos, &tran, &add));
 	vct3_rotation(w_pos, rot);
 	vct3_mul(w_pos, sca);
 	return (w_pos);
 }
 
-t_vector2		*world_to_view(t_vector2 *cursor, t_camera cam, t_vector3 w_pos, float scale)
+t_vct2			*world_to_view(t_vct2 *cur, t_camera cam, t_vct3 w_pos, float s)
 {
-	t_vector3 delta;
+	t_vct3		delta;
 
 	delta = *vct3_calc(&w_pos, cam.position, &sub);
 	vct3_rotation(&delta, *cam.rotation);
 	if (delta.z < 0)
 	{
-		vct2_value(cursor, -1, -1);
+		vct2_value(cur, -1, -1);
 	}
 	else if (cam.proj == 1)
 	{
-		cursor->x =	(delta.x * 1000 * scale / delta.z * tan(cam.fov / 2 * PI / 180));
-		cursor->x += cam.size_x / 2;
-		cursor->y = (delta.y * 1000 * scale / delta.z * tan(cam.fov / 2 * PI / 180));
-		cursor->y += cam.size_y / 2;
-		if (cursor->x < 0 || cursor->y < 0 || cursor->x > cam.size_x || cursor->y > cam.size_y)
-			vct2_value(cursor, -1, -1);
-
+		cur->x = (delta.x * 1000 * s / delta.z * tan(cam.fov * PI / 360));
+		cur->x += cam.x / 2;
+		cur->y = (delta.y * 1000 * s / delta.z * tan(cam.fov * PI / 360));
+		cur->y += cam.y / 2;
+		if (cur->x < 0 || cur->y < 0 || cur->x > cam.x
+			|| cur->y > cam.y)
+			vct2_value(cur, -1, -1);
 	}
 	else if (cam.proj == 2)
 	{
-		cursor->x =	delta.x * 10 * scale + cam.size_x / 2;
-		cursor->y = delta.y * 10 * scale + cam.size_y / 2;
+		cur->x = delta.x * 10 * s + cam.x / 2;
+		cur->y = delta.y * 10 * s + cam.y / 2;
 	}
-	return (cursor);
+	return (cur);
 }
 
-t_vector3		*vct3_rotation(t_vector3 *pos, t_vector3 rot)
+t_vct3			*vct3_rotation(t_vct3 *pos, t_vct3 rot)
 {
-
-	t_vector3	tmp;
+	t_vct3		tmp;
 
 	rot.x = rot.x * PI / 180;
 	rot.y = rot.y * PI / 180;

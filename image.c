@@ -1,24 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   image.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/09 15:30:27 by tbottini          #+#    #+#             */
+/*   Updated: 2019/02/09 16:53:41 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fdf.h"
 
-unsigned int 	color(unsigned char r, unsigned char g, unsigned char b)
+void			pixel_img(t_mlx_data *fdf, t_vct2 vct, t_col color)
 {
-    return (r * 256*256) + (g * 256) + b;
-}
-
-void			pixel_img(t_mlx_data *fdf, t_vector2 vct, unsigned int color)
-{
-	if (vct.x < fdf->cam->size_x && vct.y < fdf->cam->size_y && vct.y > 0
+	if (vct.x < fdf->cam->x
+		&& vct.y < fdf->cam->y
+		&& vct.y > 0
 		&& vct.x > 0)
-		fdf->screen[vct.x + vct.y * fdf->cam->size_x] = color;
+		fdf->screen[vct.x + vct.y * fdf->cam->x] = color.c;
 }
 
-static void			trait_img(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigned int col)
+void			trait_id(t_mlx_data *fdf, t_vct2 vct1, t_vct2 vct2, t_col col)
 {
-	int dx;
-	int dy;
-	int D;
-	int yi;
+	int			dx;
+	int			dy;
+	int			d;
+	int			yi;
 
 	dx = vct2.x - vct1.x;
 	dy = vct2.y - vct1.y;
@@ -28,26 +36,26 @@ static void			trait_img(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigne
 		yi = -1;
 		dy = -dy;
 	}
-	D = 2 * dy + dx;
+	d = 2 * dy + dx;
 	while (vct1.x != vct2.x)
 	{
 		vct1.x++;
 		pixel_img(fdf, vct1, col);
-		if (D > 0)
+		if (d > 0)
 		{
 			vct1.y += yi;
-			D -= 2*dx;
+			d -= 2 * dx;
 		}
-		D += 2*dy;
+		d += 2 * dy;
 	}
 }
 
-static void			trait_img_up(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigned int col)
+void			trait_iu(t_mlx_data *fdf, t_vct2 vct1, t_vct2 vct2, t_col col)
 {
-	int dx;
-	int dy;
-	int D;
-	int xi;
+	int			dx;
+	int			dy;
+	int			d;
+	int			xi;
 
 	dy = vct2.y - vct1.y;
 	dx = vct2.x - vct1.x;
@@ -57,21 +65,21 @@ static void			trait_img_up(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsi
 		xi = -1;
 		dx = -dx;
 	}
-	D = 2 * dx + dy;
+	d = 2 * dx + dy;
 	while (vct1.y != vct2.y)
 	{
 		vct1.y++;
 		pixel_img(fdf, vct1, col);
-		if (D > 0)
+		if (d > 0)
 		{
 			vct1.x += xi;
-			D -= 2*dy;
+			d -= 2 * dy;
 		}
-		D += 2*dx;
+		d += 2 * dx;
 	}
 }
 
-void		trait(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigned int col)
+void			trait(t_mlx_data *fdf, t_vct2 vct1, t_vct2 vct2, t_col col)
 {
 	if (vct2.x != -1 && vct2.y != -1
 		&& vct1.x != -1 && vct1.y != -1)
@@ -79,16 +87,44 @@ void		trait(t_mlx_data *fdf, t_vector2 vct1, t_vector2 vct2, unsigned int col)
 		if (abs(vct2.y - vct1.y) < abs(vct2.x - vct1.x))
 		{
 			if (vct1.x > vct2.x)
-				trait_img(fdf, vct2, vct1, col);
+				trait_id(fdf, vct2, vct1, col);
 			else
-				trait_img(fdf, vct1, vct2, col);
+				trait_id(fdf, vct1, vct2, col);
 		}
 		else
 		{
 			if (vct1.y > vct2.y)
-				trait_img_up(fdf, vct2, vct1, col);
+				trait_iu(fdf, vct2, vct1, col);
 			else
-				trait_img_up(fdf, vct1, vct2, col);
+				trait_iu(fdf, vct1, vct2, col);
 		}
+	}
+}
+
+void			print_input(t_mlx_data *fdf)
+{
+	char		s[30];
+
+	ft_strcpy(s, "Esc Leave Fdf");
+	mlx_string_put(fdf->mlx, fdf->win, 10, 10, WHITE, s);
+	ft_strcpy(s, "W/A/S/d Move");
+	mlx_string_put(fdf->mlx, fdf->win, 10, 30, WHITE, s);
+	ft_strcpy(s, "Y/H U/J +/- Couleur");
+	mlx_string_put(fdf->mlx, fdf->win, 10, 50, WHITE, s);
+	if (fdf->cam->proj == 2)
+	{
+		ft_strcpy(s, "P Conique Proj");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 70, WHITE, s);
+	}
+	else
+	{
+		ft_strcpy(s, "R/F Up/down");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 70, WHITE, s);
+		ft_strcpy(s, "P Iso Proj");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 90, WHITE, s);
+		ft_strcpy(s, "Ctrl/Shift +/- FOV");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 110, WHITE, s);
+		ft_strcpy(s, "Mouse Turn Cam");
+		mlx_string_put(fdf->mlx, fdf->win, 10, 130, WHITE, s);
 	}
 }

@@ -1,20 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parseur.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/09 16:25:54 by tbottini          #+#    #+#             */
+/*   Updated: 2019/02/09 17:08:59 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-int			ft_atoc(char *str, int *i, int *nbr)
+int				ft_atoc(char *str, int *i, int *nbr)
 {
-	int sign;
+	int			sign;
 
 	*nbr = 0;
 	sign = 1;
-
 	while (!ft_isdigit(str[*i]) && !(str[*i] == '-' && ft_isdigit(str[*i + 1]))
 		&& str[*i] != '\n' && str[*i])
 		*i = *i + 1;
-	if (str[*i] == '\n')
-	{
-		(*i)++;
+	if (str[++(*i) - 1] == '\n')
 		return (-1);
-	}
+	(*i)--;
 	if (str[*i] == '\0')
 		return (-2);
 	if (str[*i] == '-')
@@ -30,21 +39,19 @@ int			ft_atoc(char *str, int *i, int *nbr)
 	return (1);
 }
 
-int 		pars(int fd, t_vector2 *len)
+int				pars(int fd, t_vct2 *len)
 {
-	int 	nb;
-	int 	ret;
-	char 	*line;
-	int 	i;
-	int 	nb_elem_ligne;
+	int			nb;
+	int			ret;
+	char		*line;
+	int			i;
+	int			nb_elem_ligne;
 
-	len->x = 0;
-	len->y = 0;
-	i = 0;
+	vct2_value(len, 0, 0);
 	nb_elem_ligne = 0;
-	ret = 0;
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
+		i = 0;
 		while (ft_atoc(line, &i, &nb) > 0)
 			nb_elem_ligne++;
 		if (len->x == 0)
@@ -54,16 +61,13 @@ int 		pars(int fd, t_vector2 *len)
 		nb_elem_ligne = 0;
 		free(line);
 		len->y++;
-		i = 0;
 	}
 	free(line);
-	if (ret == -1)
-		return (0);
-	close (fd);
-	return (1);
+	close(fd);
+	return ((ret == 0) ? 1 : -1);
 }
 
-t_rmesh		*rmesh_new(t_vector2 len)
+t_rmesh			*rmesh_new(t_vct2 len)
 {
 	t_rmesh		*new_rmesh;
 
@@ -77,7 +81,7 @@ t_rmesh		*rmesh_new(t_vector2 len)
 	return (new_rmesh);
 }
 
-t_rmesh		*get_rmesh(int fd, t_vector2 len)
+t_rmesh			*get_rmesh(int fd, t_vct2 len)
 {
 	int			i;
 	int			nb;
@@ -86,34 +90,31 @@ t_rmesh		*get_rmesh(int fd, t_vector2 len)
 
 	if (!(wires = rmesh_new(len)))
 		return (NULL);
-	wires->size_y = -1;
-	while (++(wires->size_y) < len.y)
+	wires->y = -1;
+	while (++(wires->y) < len.y)
 	{
 		i = 0;
-		wires->size_x = -1;
+		wires->x = -1;
 		if (!(get_next_line(fd, &line)))
 			return (NULL);
-		while (++wires->size_x < len.x)
+		while (++wires->x < len.x)
 		{
 			ft_atoc(line, &i, &nb);
-			if (nb > 127)
-				nb = 127;
-			else if (nb < -128)
-				nb = -128;
-			wires->wires[wires->size_y][wires->size_x] = nb;
+			nb = wall_nb(nb, -128, 127);
+			wires->wires[wires->y][wires->x] = nb;
 		}
 		free(line);
 	}
-	wires->size_x = len.x;
+	wires->x = len.x;
 	close(fd);
 	return (wires);
 }
 
 t_rmesh			*fdf_parseur(int ac, char **av)
 {
-	int 		fd;
-	t_rmesh 	*wires;
-	t_vector2	len;
+	int			fd;
+	t_rmesh		*wires;
+	t_vct2		len;
 
 	if (ac != 2)
 	{

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/09 16:25:41 by tbottini          #+#    #+#             */
+/*   Updated: 2019/02/09 16:44:21 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-void 			input_deplacement(int key, t_mlx_data *fdf)
+void			input_deplacement(int key, t_mlx_data *fdf)
 {
 	float x_dir;
 	float z_dir;
@@ -31,50 +43,16 @@ void 			input_deplacement(int key, t_mlx_data *fdf)
 
 void			input_movement_ortho(int key, t_mlx_data *fdf)
 {
-	if (key == KEY_W)
-	{
-		fdf->cam->position->y -= 5;
-		fdf->cam->position->x -= 5;
-	}
-	else if (key == KEY_S)
-	{
-		fdf->cam->position->y += 5;
-		fdf->cam->position->x += 5;
-	}
-	else if (key == KEY_A)
-	{
-		fdf->cam->position->y += 5;
-		fdf->cam->position->x -= 5;
-	}
-	else if (key == KEY_D)
-	{
-		fdf->cam->position->y -= 5;
-		fdf->cam->position->x += 5;
-	}
+	fdf->cam->position->y += (key == KEY_S || key == KEY_A) ? 5 : -5;
+	fdf->cam->position->x += (key == KEY_S || key == KEY_D) ? 5 : -5;
 }
 
-void			close_window(t_mlx_data *fdf)
+void			switch_projection(t_mlx_data *fdf)
 {
-	rmesh_del(fdf->wires);
-	free(fdf->cam->position);
-	free(fdf->cam->rotation);
-	free(fdf->cam);
-	if (fdf->mouse_pos)
-		free(fdf->mouse_pos);
-	mlx_destroy_image(fdf->mlx, fdf->img);
-	mlx_destroy_window(fdf->mlx, fdf->win);
-	free(fdf->mlx);
-	free(fdf);
-	exit(0);
-}
-
-
-void			input_fov(int key, t_mlx_data *fdf)
-{
-	if (key == KEY_CTRL)
-		fdf->cam->fov -= 4;
-	else if (key == KEY_SHIFT)
-		fdf->cam->fov += 4;
+	free(fdf->mouse_pos);
+	fdf->mouse_pos = NULL;
+	fdf->cam->proj = (fdf->cam->proj == 1) ? (2) : (1);
+	camera_ajust(fdf);
 }
 
 int				input_fdf(int key, t_mlx_data *fdf)
@@ -86,37 +64,25 @@ int				input_fdf(int key, t_mlx_data *fdf)
 		else
 			input_movement_ortho(key, fdf);
 	}
-	else if (key == KEY_R)
-		fdf->cam->position->y -= 15;
-	else if (key == KEY_F)
-		fdf->cam->position->y += 15;
-	if (key == KEY_CTRL || key == KEY_SHIFT)
-		input_fov(key, fdf);
 	else if (key == KEY_P)
-	{
-		free(fdf->mouse_pos);
-		fdf->mouse_pos = NULL;
-		fdf->cam->proj = (fdf->cam->proj == 1) ? (2) : (1);
-		ajust_cam(fdf);
-	}
-	else if (key == KEY_T)
-		fdf->scale_z += 1;
-	else if (key == KEY_G)
-		fdf->scale_z -= 1;
-	if (key  == KEY_U || key == KEY_J || key == KEY_H || key == KEY_Y)
+		switch_projection(fdf);
+	else if (key == KEY_R || key == KEY_F)
+		fdf->cam->position->y += (key == KEY_F) ? 15 : -15;
+	else if (key == KEY_T || key == KEY_G)
+		fdf->scale_z += (key == KEY_T) ? 1 : -1;
+	else if (key == KEY_CTRL || key == KEY_SHIFT)
+		fdf->cam->fov += (key == KEY_SHIFT) ? 4 : -4;
+	else if (key == KEY_U || key == KEY_J || key == KEY_H || key == KEY_Y)
 		input_color(&fdf->cs, key);
-	ft_bzero(fdf->screen, fdf->cam->size_x * fdf->cam->size_y * 4);
-	draw_wires(fdf);
-	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
-	print_input(fdf);
+	fdf_refresh(fdf);
 	if (key == KEY_ESC)
-		close_window(fdf);
+		mlx_data_close(fdf);
 	return (1);
 }
 
-int 			mouse_motion(int x, int y, t_mlx_data *fdf)
+int				mouse_motion(int x, int y, t_mlx_data *fdf)
 {
-	t_vector2 tmp;
+	t_vct2 tmp;
 
 	if (fdf->mouse_pos == NULL)
 	{
@@ -128,12 +94,9 @@ int 			mouse_motion(int x, int y, t_mlx_data *fdf)
 	vct2_value(fdf->mouse_pos, x / 2, y / 3);
 	if (fdf->cam->proj == 1)
 	{
-		fdf->cam->rotation->y -= tmp.x ;
-		fdf->cam->rotation->x += tmp.y ;
-		ft_bzero(fdf->screen, fdf->cam->size_x * fdf->cam->size_y * 4);
-		draw_wires(fdf);
-		mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
-		print_input(fdf);
+		fdf->cam->rotation->y -= tmp.x;
+		fdf->cam->rotation->x += tmp.y;
+		fdf_refresh(fdf);
 	}
 	return (0);
 }

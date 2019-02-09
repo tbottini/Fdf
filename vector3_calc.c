@@ -1,39 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector2.c                                          :+:      :+:    :+:   */
+/*   vector3_calc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/09 16:26:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/02/09 17:12:26 by tbottini         ###   ########.fr       */
+/*   Created: 2019/02/09 16:26:17 by tbottini          #+#    #+#             */
+/*   Updated: 2019/02/09 17:13:55 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_vct2		*vct2_new(int x, int y)
+t_vct3		*vct3_calc(t_vct3 *vct1, t_vct3 *vct2, int (*f)(int, int))
 {
-	t_vct2	*new_vector2;
-
-	if (!(new_vector2 = (t_vct2 *)malloc(sizeof(t_vct2))))
-		return (NULL);
-	new_vector2->x = x;
-	new_vector2->y = y;
-	return (new_vector2);
+	vct1->x = f(vct1->x, vct2->x);
+	vct1->y = f(vct1->y, vct2->y);
+	vct1->z = f(vct1->z, vct2->z);
+	return (vct1);
 }
 
-t_vct2		*vct2_value(t_vct2 *vct, int x, int y)
+int			sub(int a, int b)
 {
-	vct->x = x;
-	vct->y = y;
-	return (vct);
+	return (a - b);
 }
 
-void		vct2_print(t_vct2 vct)
+int			add(int a, int b)
 {
-	ft_putstr("vector x : ");
-	ft_putnbr(vct.x);
-	ft_putstr(" y : ");
-	ft_putnbrcr(vct.y);
+	return (a + b);
+}
+
+int			divi(int a, int b)
+{
+	return (a / b);
+}
+
+int			mul(int a, int b)
+{
+	return (a * b);
 }

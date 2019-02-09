@@ -1,25 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/09 16:24:54 by tbottini          #+#    #+#             */
+/*   Updated: 2019/02/09 16:29:06 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-void		color_stock_set(t_color_stock *cs)
+unsigned int	rgb_color(unsigned char r, unsigned char g, unsigned char b)
 {
-	cs->color1 = WHITE;
-	cs->color2 = WHITE;
-	cs->color_s1 = 0;
-	cs->color_s2 = 0;
-	cs->color_stock[0] = WHITE;
-	cs->color_stock[1] = RED;
-	cs->color_stock[2] = PURPLE;
-	cs->color_stock[3] = BLUE;
-	cs->color_stock[4] = CYAN;
-	cs->color_stock[5] = GREEN;
-	cs->color_stock[6] = YELLOW;
-	cs->color_stock[7] = PCHARRIE;
-	cs->color_stock[8] = FRATARDI;
-	cs->color_stock[9] = BEIGE;
-	cs->color_stock[10] = BLACK;
+	return (r * 256 * 256) + (g * 256) + b;
 }
 
-int 		input_color(t_color_stock *cs, int key)
+void			color_stock_set(t_color_stock *cs)
+{
+	cs->color1.c = WHITE;
+	cs->color2.c = WHITE;
+	cs->color_s1 = 0;
+	cs->color_s2 = 0;
+	cs->color_stock[0].c = WHITE;
+	cs->color_stock[1].c = RED;
+	cs->color_stock[2].c = PURPLE;
+	cs->color_stock[3].c = BLUE;
+	cs->color_stock[4].c = CYAN;
+	cs->color_stock[5].c = GREEN;
+	cs->color_stock[6].c = YELLOW;
+	cs->color_stock[7].c = PCHARRIE;
+	cs->color_stock[8].c = FRATARDI;
+	cs->color_stock[9].c = BEIGE;
+	cs->color_stock[10].c = BLACK;
+}
+
+int				input_color(t_color_stock *cs, int key)
 {
 	if (key == KEY_Y)
 		cs->color_s1++;
@@ -40,7 +57,7 @@ int 		input_color(t_color_stock *cs, int key)
 	return (1);
 }
 
-int 		cs_color(t_color_stock cs, char color)
+t_col			cs_color(t_color_stock cs, char color)
 {
 	if (color == 1)
 		return (cs.color_stock[cs.color_s1]);
