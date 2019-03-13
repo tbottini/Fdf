@@ -6,11 +6,11 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/03/10 16:03:18 by tbottini         ###   ########.fr        #
+#    Updated: 2019/03/13 21:37:16 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=		fractol
+NAME		=		fdf
 
 CC			=		gcc
 
