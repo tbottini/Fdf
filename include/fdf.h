@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 15:28:34 by tbottini          #+#    #+#             */
-/*   Updated: 2019/03/13 21:23:37 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/11/03 14:42:03 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "libft.h"
 # include "mlx.h"
 # include <math.h>
-# include "/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/X.h"
+# include "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/X.h"
 
 # define SCREEN_X 800
 # define SCREEN_Y 800
